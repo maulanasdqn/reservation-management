@@ -52,10 +52,16 @@ export const DashboardUserModule: FC = (): ReactElement => {
                 href={`/dashboard/user/update/${row.original?.id}?title=Perbarui data pengguna`}
                 size="sm"
                 variant="success"
+                title="Edit"
               >
                 <AiFillEdit />
               </Button>
-              <Button onClick={() => handleModalDelete(row.original?.id)} size="sm" variant="error">
+              <Button
+                onClick={() => handleModalDelete(row.original?.id)}
+                size="sm"
+                variant="error"
+                title="Delete"
+              >
                 <AiFillDelete />
               </Button>
             </div>

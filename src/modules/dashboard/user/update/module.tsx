@@ -72,7 +72,7 @@ export const DashboardUserUpdateModule = () => {
   return (
     <FormTemplate onSubmit={onSubmit}>
       <div className="flex flex-col gap-y-3 w-full">
-        <div className="flex gap-x-3 w-full">
+        <div className="flex flex-col md:flex-row gap-y-3 md:gap-x-3 w-full">
           <ControlledFieldText
             size="sm"
             placeholder="Masukkan nama lengkap"
@@ -94,7 +94,7 @@ export const DashboardUserUpdateModule = () => {
             message={errors.email?.message}
           />
         </div>
-        <div className="flex gap-x-3 w-full">
+        <div className="flex flex-col md:flex-row gap-y-3 md:gap-x-3 w-full">
           <ControlledFieldText
             size="sm"
             placeholder="Masukkan kata sandi"

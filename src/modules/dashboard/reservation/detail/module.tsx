@@ -15,7 +15,7 @@ export const DashboardReservationDetailModule: FC = (): ReactElement => {
   return (
     <>
       <FormTemplate>
-        <div className="flex gap-x-6">
+        <div className="flex flex-col md:flex-row gap-y-6 md:gap-x-6">
           <div className="flex flex-col gap-y-2">
             {data?.isApproved ? (
               <QRCode value={`${data?.code}`} />

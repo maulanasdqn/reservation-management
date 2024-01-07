@@ -101,7 +101,7 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
   return (
     <FormTemplate onSubmit={onSubmit}>
       <span className="text-2xl font-semibold">Data Tamu</span>
-      <div className="flex gap-x-3 w-full">
+      <div className="flex flex-col gap-y-3 md:flex-row md:gap-x-3 w-full">
         <ControlledFieldText
           size="sm"
           required
@@ -120,7 +120,7 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
           placeholder="Masukkan nama tamu"
         />
       </div>
-      <div className="flex gap-x-3 w-full">
+      <div className="flex flex-col gap-y-3 md:flex-row md:gap-x-3 w-full">
         <ControlledFieldText
           size="sm"
           required
@@ -160,7 +160,7 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
         />
       </div>
       <span className="text-2xl font-semibold">Data Reservasi</span>
-      <div className="flex gap-x-3 w-full">
+      <div className="flex gap-y-3 flex-col md:flex-row md:gap-x-3 w-full">
         <ControlledFieldSelect
           size="sm"
           label="Unit Kerja"
@@ -178,7 +178,7 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
           placeholder="Pilih Tipe Tamu"
         />
       </div>
-      <div className="flex gap-x-3 w-full">
+      <div className="flex gap-y-3 flex-col md:flex-row md:gap-x-3 w-full">
         <ControlledFieldDate
           size="sm"
           label="Tanggal"
@@ -196,7 +196,7 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
         />
       </div>
 
-      <div className="flex gap-x-3 w-full">
+      <div className="flex gap-y-3 flex-col md:flex-row md:gap-x-3 w-full">
         <ControlledFieldText
           size="sm"
           label="Keperluan"
