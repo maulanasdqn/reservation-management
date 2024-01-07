@@ -2,6 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { permissionMapper } from "./utils";
 import { TUser } from "./entities/user";
+import { PERMISSIONS } from "./server/database/schema";
 
 export async function middleware(req: NextRequest, _event: NextFetchEvent) {
   const session = await getToken({ req: req as any });
@@ -33,8 +34,6 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
       return url.pathname === route.url;
     });
 
-    console.log(matchingRoute);
-
     if (matchingRoute) {
       const isAuthorized =
         matchingRoute.permissions.length === 0 ||
@@ -42,13 +41,10 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
           userRole?.permissions?.includes?.(permission),
         );
 
-      console.log(
-        matchingRoute.permissions.some((permission) =>
-          userRole?.permissions?.includes?.(permission),
-        ),
-      );
-
       if (!isAuthorized) {
+        if (!userRole?.permissions.includes(PERMISSIONS.IS_ADMIN)) {
+          return NextResponse.redirect(dashboardUserUrl);
+        }
         return NextResponse.redirect(deniedUrl);
       }
 
