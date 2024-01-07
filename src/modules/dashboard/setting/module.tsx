@@ -2,12 +2,11 @@
 import { Button, FormTemplate } from "@/components";
 import { FC, ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { TUser } from "@/entities";
 import { ControlledFieldTextRich } from "@/components/organisms/forms/fields/controlleds/rich";
 import { clientTrpc } from "@/libs/trpc/client";
 import { notifyMessage } from "@/utils";
 
-export const SettingModule: FC<{ session: TUser }> = ({ session }): ReactElement => {
+export const SettingModule: FC = (): ReactElement => {
   const { data } = clientTrpc.getSetting.useQuery();
 
   const { control, handleSubmit, reset } = useForm<{ value: string }>({

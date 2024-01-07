@@ -11,6 +11,7 @@ export const authOptions = {
     signIn: "/auth/login",
   },
   providers: [googleProvider, credentialProvider],
+  //@ts-ignore
   adapter: DrizzleAdapter(db),
   session: { strategy: "jwt" },
   callbacks: {

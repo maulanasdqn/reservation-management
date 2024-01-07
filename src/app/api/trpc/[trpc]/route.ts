@@ -9,6 +9,7 @@ const handler = (req: Request) =>
     req,
     router: appRouter,
     createContext: async () => {
+      //@ts-ignore
       const session = await getServerSession(authOptions);
       return {
         session,

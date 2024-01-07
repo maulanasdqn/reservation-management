@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { Fragment, PropsWithChildren } from "react";
 
 export const DashboardMixin = async (props: PropsWithChildren) => {
+  //@ts-ignore
   const session = await getServerSession(authOptions);
   return (
     <Fragment>
