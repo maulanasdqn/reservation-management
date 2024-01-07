@@ -1,1 +1,0 @@
-ALTER TABLE "app_business" ADD CONSTRAINT "app_business_name_unique" UNIQUE("name");

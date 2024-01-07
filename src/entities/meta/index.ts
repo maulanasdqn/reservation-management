@@ -2,14 +2,14 @@ import { AxiosError } from "axios";
 import { z } from "zod";
 
 export type TMetaItem = {
-  code: number;
-  status: string;
-  message: string;
-  page: number;
-  perPage: number;
-  totalPage: number;
-  nextPage: number | null;
-  prevPage: number | null;
+  code?: number;
+  status?: string;
+  message?: string;
+  page?: number;
+  perPage?: number;
+  totalPage?: number;
+  nextPage?: number | null;
+  prevPage?: number | null;
 };
 
 export const VSMetaRequest = z

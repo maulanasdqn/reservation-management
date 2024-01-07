@@ -62,7 +62,7 @@ export const AuthLoginModule: FC = (): ReactElement => {
   return (
     <form
       onSubmit={onSubmit}
-      className="md:w-1/2 w-full border h-full gap-y-4 justify-center flex flex-col md:px-12 px-6 rounded-lg"
+      className="md:w-1/4 w-full p-6 border h-fit bg-gray-100 gap-y-4 justify-center flex flex-col  rounded-lg"
     >
       <div className="flex flex-col gap-y-2">
         <h1 className="text-4xl text-gray-600 text-center font-medium">Masuk</h1>

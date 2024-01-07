@@ -32,12 +32,12 @@ export const DashboardUserModule: FC = (): ReactElement => {
   type Unpacked<T> = T extends (infer U)[] ? U : T;
   type TData = NonNullable<typeof data>;
 
-  const handleModalDelete = (id: string) => {
+  const handleModalDelete = (id: string): void => {
     setDeleteModal(true);
     setId(id);
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearch(e.target.value);
   };
 
@@ -78,15 +78,6 @@ export const DashboardUserModule: FC = (): ReactElement => {
       {
         header: "Hak Akses",
         accessorKey: "role.name",
-      },
-
-      {
-        header: "Status",
-        accessorKey: "isActive",
-        cell: ({ getValue }) => {
-          const value = getValue<boolean>();
-          return value ? "Aktif" : "Tidak Aktif";
-        },
       },
 
       {

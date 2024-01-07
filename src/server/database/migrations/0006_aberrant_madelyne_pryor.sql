@@ -1,1 +1,0 @@
-ALTER TABLE "app_orders" ADD COLUMN "payment_id" uuid NOT NULL;

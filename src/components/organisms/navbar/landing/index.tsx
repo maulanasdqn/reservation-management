@@ -1,5 +1,4 @@
 import { Button } from "@/components";
-import { clientTrpc } from "@/libs/trpc/client";
 import Link from "next/link";
 import { FC, ReactElement, useState } from "react";
 import { SiMarketo } from "react-icons/si";
@@ -10,10 +9,10 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { IoMdLogOut, IoMdPerson } from "react-icons/io";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export const NavbarLanding: FC = (): ReactElement => {
-  const { data } = clientTrpc.getProfile.useQuery();
+  const { data } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 

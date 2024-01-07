@@ -55,35 +55,27 @@ export function hasCommonElements<T>(arr1: T[], arr2: T[]): boolean {
 export const permissionMapper = [
   {
     url: "/dashboard",
-    permissions: [PERMISSIONS.DASHBOARD],
+    permissions: [PERMISSIONS.IS_ADMIN],
   },
   {
-    url: "/dashboard/product",
-    permissions: [PERMISSIONS.PRODUCT_READ, PERMISSIONS.HAS_BUSINESS],
+    url: "/dashboard/guest",
+    permissions: [PERMISSIONS.GUEST_READ],
   },
   {
-    url: "/dashboard/customer",
-    permissions: [PERMISSIONS.CUSTOMER_READ, PERMISSIONS.HAS_BUSINESS],
+    url: "/dashboard/guest/complete",
+    permissions: [PERMISSIONS.GUEST_READ],
   },
   {
-    url: "/dashboard/report/transaction",
-    permissions: [PERMISSIONS.REPORT_TRANSACTION_READ, PERMISSIONS.HAS_BUSINESS],
+    url: "/dashboard/setting",
+    permissions: [PERMISSIONS.IS_ADMIN],
   },
   {
-    url: "/dashboard/report/transaction/create",
-    permissions: [PERMISSIONS.REPORT_TRANSACTION_CREATE, PERMISSIONS.HAS_BUSINESS],
+    url: "/scan",
+    permissions: [],
   },
   {
-    url: "/dashboard/report/payment",
-    permissions: [PERMISSIONS.REPORT_PAYMENT_READ, PERMISSIONS.HAS_BUSINESS],
-  },
-  {
-    url: "/dashboard/report/financial",
-    permissions: [PERMISSIONS.REPORT_FINANCIAL_READ, PERMISSIONS.HAS_BUSINESS],
-  },
-  {
-    url: "/dashboard/user",
-    permissions: [PERMISSIONS.USER_READ, PERMISSIONS.HAS_BUSINESS],
+    url: "/check-in",
+    permissions: [],
   },
 ];
 
@@ -122,3 +114,12 @@ export const notifyMessage = ({
     draggable: true,
     progress: undefined,
   });
+
+export function generateAlphanumericCode() {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "";
+  for (let i = 0; i < 4; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}

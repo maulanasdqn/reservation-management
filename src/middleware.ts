@@ -8,18 +8,32 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
   const url = req.nextUrl;
   const loginUrl = new URL("/auth/login", url.origin);
   const dashboardUrl = new URL("/dashboard", url.origin);
+  const dashboardUserUrl = new URL("/dashboard/guest", url.origin);
+
   const deniedUrl = new URL("/denied", url.origin);
+
   dashboardUrl.searchParams.set("title", "Dashboard");
   dashboardUrl.searchParams.set("isSidebarOpen", "open");
+
+  dashboardUserUrl.searchParams.set("title", "Dashboard");
+  dashboardUserUrl.searchParams.set("isSidebarOpen", "open");
+
   if (url.pathname.startsWith("/dashboard") && !session) {
     return NextResponse.redirect(loginUrl);
   }
+
   if (url.pathname.startsWith("/auth") && session) {
     return NextResponse.redirect(dashboardUrl);
   }
+
   if (session) {
     const userRole = session?.role as TUser["role"];
-    const matchingRoute = permissionMapper.find((route) => url.pathname.startsWith(route.url));
+
+    const matchingRoute = permissionMapper.find((route) => {
+      return url.pathname === route.url;
+    });
+
+    console.log(matchingRoute);
 
     if (matchingRoute) {
       const isAuthorized =
@@ -28,9 +42,17 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
           userRole?.permissions?.includes?.(permission),
         );
 
+      console.log(
+        matchingRoute.permissions.some((permission) =>
+          userRole?.permissions?.includes?.(permission),
+        ),
+      );
+
       if (!isAuthorized) {
         return NextResponse.redirect(deniedUrl);
       }
+
+      return null;
     }
   }
   return NextResponse.next();

@@ -2,7 +2,6 @@
 import { signOut } from "next-auth/react";
 import { FC, ReactElement, Suspense, useMemo, useState } from "react";
 import { IoMdClose, IoMdLogOut, IoMdMenu, IoMdPerson } from "react-icons/io";
-import { RxAvatar } from "react-icons/rx";
 import Image from "next/image";
 import { useQueryState } from "next-usequerystate";
 import { clsx } from "clsx";
@@ -18,7 +17,7 @@ export const Navbar: FC<{ user: TUser }> = ({ user }): ReactElement => {
   const profilePic = useMemo(() => user?.image, [user]);
 
   const navbarClassName = clsx(
-    "w-full items-center gap-x-4 right-0 fixed top-0 bg-white shadow-md p-4 max-h-[56px] z-1 justify-between flex z-10",
+    "w-full items-center gap-x-4 right-0 fixed top-0 bg-gray-800 shadow-md p-4 max-h-[56px] z-1 justify-between flex z-10",
     {
       "sm:pl-[280px]": isSidebarOpen === "open" || isSidebarOpen === "null" || !isSidebarOpen,
       "pl-6": isSidebarOpen === "close",
@@ -37,11 +36,11 @@ export const Navbar: FC<{ user: TUser }> = ({ user }): ReactElement => {
     <nav className={navbarClassName}>
       <div className="flex gap-x-4 relative">
         {isSidebarOpen === "close" ? (
-          <IoMdMenu onClick={handleSidebar} className="font-bold" size={24} />
+          <IoMdMenu onClick={handleSidebar} className="font-bold text-white" size={24} />
         ) : (
-          <IoMdClose onClick={handleSidebar} className="font-bold" size={24} />
+          <IoMdClose onClick={handleSidebar} className="font-bold text-white" size={24} />
         )}
-        <span>
+        <span className="text-white">
           Selamat Datang, <Suspense fallback="Loading..."> {userName} </Suspense>
         </span>
       </div>

@@ -2,9 +2,8 @@ import { VSMetaRequest, VSRegister } from "@/entities";
 import { publicProcedure } from "@/libs/trpc/init";
 import { db, roles, users } from "@/server";
 import { calculateTotalPages, metaResponsePrefix } from "@/utils";
-import { asc, desc, eq, ilike, or } from "drizzle-orm";
+import { desc, eq, ilike, or } from "drizzle-orm";
 import { z } from "zod";
-import * as bs from "bcryptjs";
 
 export const getUser = publicProcedure.input(VSMetaRequest).query(async ({ input }) => {
   try {
@@ -92,24 +91,3 @@ export const updateUser = publicProcedure.input(VSRegister).mutation(async ({ in
     throw new Error(err as string);
   }
 });
-
-export const changeStatusUser = publicProcedure
-  .input(
-    z.object({
-      isActive: z.boolean(),
-      id: z.string(),
-    }),
-  )
-  .mutation(async ({ input }) => {
-    try {
-      await db
-        .update(users)
-        .set({ isActive: input?.isActive })
-        .where(eq(users.id, input?.id as string));
-      return {
-        message: "Berhasil mengupdate user!",
-      };
-    } catch (err) {
-      throw new Error(err as string);
-    }
-  });

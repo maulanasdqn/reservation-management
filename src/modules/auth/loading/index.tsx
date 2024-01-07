@@ -6,7 +6,7 @@ const SkeletonLoader: FC<{ className?: string }> = ({ className }): ReactElement
 
 export const FormSkeleton: FC = (): ReactElement => {
   return (
-    <form className="md:w-1/2 w-full border h-full gap-y-4 justify-center flex flex-col md:px-12 px-6 rounded-lg">
+    <form className="md:w-1/4 w-full p-6 border h-fit bg-gray-100 gap-y-4 justify-center flex flex-col  rounded-lg">
       <div className="flex flex-col gap-y-2 mb-10">
         <SkeletonLoader className="h-12 w-3/4 bg-blue-200" />
         <SkeletonLoader className="h-4 w-1/2 bg-gray-200" />
