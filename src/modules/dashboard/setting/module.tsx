@@ -1,26 +1,42 @@
 "use client";
-import { ControlledFieldText, ControlledFieldTextArea, FormTemplate } from "@/components";
-import { FC, ReactElement } from "react";
+import { Button, FormTemplate } from "@/components";
+import { FC, ReactElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TUser } from "@/entities";
+import { ControlledFieldTextRich } from "@/components/organisms/forms/fields/controlleds/rich";
+import { clientTrpc } from "@/libs/trpc/client";
+import { notifyMessage } from "@/utils";
 
 export const SettingModule: FC<{ session: TUser }> = ({ session }): ReactElement => {
-  const { control } = useForm();
+  const { data } = clientTrpc.getSetting.useQuery();
+
+  const { control, handleSubmit, reset } = useForm<{ value: string }>({
+    defaultValues: {
+      value: data?.value,
+    },
+  });
+
+  useEffect(() => {
+    reset(data);
+  }, [data, reset]);
+
+  const { mutate } = clientTrpc.createSetting.useMutation();
+
+  const onSubmit = handleSubmit((data) => {
+    mutate(data.value, {
+      onSuccess: () => {
+        notifyMessage({ type: "success", message: "Pengaturan Berhasil Dibuat" });
+      },
+    });
+  });
+
   return (
-    <FormTemplate>
-      <div className="flex w-full gap-x-6 min-h-screen h-full">
-        <ControlledFieldText control={control} name={"business.name"} label="Nama Bisnis" />
-        <ControlledFieldText
-          control={control}
-          name={"business.phoneNumber"}
-          disabled
-          label="Nomor Telepon Bisnis"
-        />
-        <ControlledFieldTextArea
-          control={control}
-          name={"business.address"}
-          label="Alamat Bisnis"
-        />
+    <FormTemplate onSubmit={onSubmit}>
+      <div className="flex flex-col w-full gap-y-6 min-h-screen h-full">
+        <ControlledFieldTextRich control={control} name={"value"} />
+        <div className="w-fit">
+          <Button type="submit">Simpan</Button>
+        </div>
       </div>
     </FormTemplate>
   );

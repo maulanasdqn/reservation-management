@@ -1,0 +1,1 @@
+ALTER TABLE "app_setting" DROP COLUMN IF EXISTS "name";

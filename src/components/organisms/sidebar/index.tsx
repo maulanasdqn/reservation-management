@@ -61,7 +61,7 @@ export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
           name: "Data Tamu Selesai",
           icon: <FaUserCheck className={iconClassName} />,
           path: "/dashboard/order",
-          url: `/dashboard/guest/complete?title=Manajamen Pesanan&isSidebarOpen=${isSidebarOpen}`,
+          url: `/dashboard/guest/complete?title=Data Tamu Selesai&isSidebarOpen=${isSidebarOpen}`,
           permissions: [PERMISSIONS.GUEST_READ],
         },
       ],

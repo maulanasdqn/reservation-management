@@ -4,16 +4,19 @@ import { db, guests } from "@/server";
 import { metaResponsePrefix } from "@/utils";
 import { eq } from "drizzle-orm";
 
-export const createGuest = publicProcedure.input(VSGuest).mutation(async ({ input }) => {
-  try {
-    await db.insert(guests).values(input).returning();
-    return {
-      message: "Berhasil membuat Tamu",
-    };
-  } catch (error) {
-    throw new Error("Terjadi Kesalahan" + error);
-  }
-});
+export const createGuest = publicProcedure
+  .input(VSGuest.omit({ id: true }))
+  .mutation(async ({ input }) => {
+    try {
+      const data = await db.insert(guests).values(input).returning();
+      return {
+        message: "Berhasil membuat Tamu",
+        id: data[0].id,
+      };
+    } catch (error) {
+      throw new Error("Terjadi Kesalahan" + error);
+    }
+  });
 
 export const getAllGuest = publicProcedure
   .input(VSMetaRequest.optional())

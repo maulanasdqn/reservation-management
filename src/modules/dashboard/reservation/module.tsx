@@ -18,6 +18,7 @@ import { clientTrpc } from "@/libs/trpc/client";
 import { useSession } from "next-auth/react";
 import { GUEST_STATUS, STATUS } from "@/constants/status";
 import { ROLES } from "@/constants/role";
+import { notifyMessage } from "@/utils";
 
 export const DashboardReservationModule: FC = (): ReactElement => {
   const router = useRouter();
@@ -61,7 +62,7 @@ export const DashboardReservationModule: FC = (): ReactElement => {
                 size={20}
                 onClick={() =>
                   router.push(
-                    `/dashboard/reservation/detail/${row.original.id}?title=Detail Data Reservasi Tamu`,
+                    `/dashboard/guest/detail/${row.original.id}?title=Detail Data Reservasi Tamu`,
                   )
                 }
               />
@@ -220,6 +221,7 @@ export const DashboardReservationModule: FC = (): ReactElement => {
                       setId("");
                       setApproveModal(false);
                       refetch();
+                      notifyMessage({ type: "success", message: "Pengajuan Berhasil Disetujui" });
                     },
                   },
                 );
@@ -262,6 +264,7 @@ export const DashboardReservationModule: FC = (): ReactElement => {
                       setId("");
                       setRejectModal(false);
                       refetch();
+                      notifyMessage({ type: "success", message: "Pengajuan Reservasi Dibatalkan" });
                     },
                   },
                 );
@@ -304,6 +307,7 @@ export const DashboardReservationModule: FC = (): ReactElement => {
                       setId("");
                       setDeleteModal(false);
                       refetch();
+                      notifyMessage({ type: "success", message: "Reservasi Berhasil Dihapus" });
                     },
                   },
                 );

@@ -12,7 +12,7 @@ import { GUEST_STATUS, STATUS } from "@/constants/status";
 import { TVSGuest, VSGuest } from "@/entities";
 import { TVSReservation, VSReservation } from "@/entities/dashboard/reservation";
 import { clientTrpc } from "@/libs/trpc/client";
-import { generateAlphanumericCode } from "@/utils";
+import { generateAlphanumericCode, notifyMessage } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { revalidatePath } from "next/cache";
@@ -27,16 +27,21 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
     watch,
     handleSubmit,
     setValue,
-    formState: { isValid },
-  } = useForm<Omit<TVSReservation, "id"> & TVSGuest>({
+    formState: { isValid, errors },
+  } = useForm<Omit<TVSReservation, "id"> & Omit<TVSGuest, "id">>({
     mode: "all",
-    resolver: zodResolver(VSReservation.omit({ id: true }).merge(VSGuest)),
+    resolver: zodResolver(
+      VSReservation.omit({ id: true, guestId: true }).merge(VSGuest.omit({ id: true })),
+    ),
   });
 
+  console.log(errors);
+
   const { data: workUnits } = clientTrpc.getAllWorkUnit.useQuery();
-  const { data: guests } = clientTrpc.getAllGuest.useQuery();
   const { data: session } = useSession();
-  const { mutate } = clientTrpc.createReservation.useMutation();
+  const { mutate: createReservation } = clientTrpc.createReservation.useMutation();
+  const { mutate: createGuest } = clientTrpc.createGuest.useMutation();
+
   const { push } = useRouter();
 
   const workUnitOptions = useMemo(() => {
@@ -46,14 +51,6 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
       value: workUnit.id,
     }));
   }, [workUnits]);
-
-  const guestOptions = useMemo(() => {
-    if (!guests) return [];
-    return guests?.data?.map((guest) => ({
-      label: guest.name,
-      value: guest.id,
-    }));
-  }, [guests]);
 
   const guestCategoryOptions = [
     {
@@ -72,16 +69,26 @@ export const DashboardReservationCreateModule: FC = (): ReactElement => {
 
   const onSubmit = handleSubmit((data) => {
     console.log("Data Dari Form", data);
-    mutate(
+    createGuest(
       {
         ...data,
-        status: STATUS.WAITING,
-        code: generateAlphanumericCode(),
       },
       {
-        onSuccess: () => {
-          push("/dashboard/reservation?title=Data Tamu");
-          revalidatePath("/dashboard/reservation");
+        onSuccess: (success) => {
+          createReservation(
+            {
+              ...data,
+              code: generateAlphanumericCode(),
+              status: STATUS.WAITING,
+              guestId: success.id,
+            },
+            {
+              onSuccess: () => {
+                push("/dashboard/guest?title=Data Tamu");
+                notifyMessage({ type: "success", message: "Tamu Berhasi Dibuat" });
+              },
+            },
+          );
         },
       },
     );

@@ -90,6 +90,13 @@ export const reservations = pgTable("app_reservations", {
   updatedAt: date("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
 
+export const setting = pgTable("app_setting", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  value: text("value").notNull(),
+  createdAt: date("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: date("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
+
 export const accounts = pgTable(
   "account",
   {

@@ -4,3 +4,4 @@ export * from "./user";
 export * from "./reservation";
 export * from "./guest";
 export * from "./work-unit";
+export * from "./setting";

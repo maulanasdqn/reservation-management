@@ -8,6 +8,20 @@
       "when": 1704630481406,
       "tag": "0000_volatile_unus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1704636398618,
+      "tag": "0001_bored_silver_samurai",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1704637816387,
+      "tag": "0002_lonely_slapstick",
+      "breakpoints": true
     }
   ]
 }

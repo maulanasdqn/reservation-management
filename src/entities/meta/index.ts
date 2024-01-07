@@ -17,6 +17,7 @@ export const VSMetaRequest = z
     search: z.string(),
     page: z.number(),
     perPage: z.number(),
+    isApproved: z.boolean().optional(),
   })
   .optional();
 

@@ -3,3 +3,4 @@ export * from "./checkbox";
 export * from "./select";
 export * from "./date";
 export * from "./text-area";
+export * from "./rich";
