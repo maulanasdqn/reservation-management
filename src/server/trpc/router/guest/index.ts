@@ -55,7 +55,8 @@ export const updateGuest = publicProcedure.input(VSGuest).mutation(async ({ inpu
       .update(guests)
       .set(input)
       .where(eq(guests.id, input.id as string))
-      .then((res) => res);
+      .returning({ id: guests.id })
+      .then((res) => res?.at(0));
   } catch (error) {
     throw new Error("Terjadi Kesalahan" + error);
   }

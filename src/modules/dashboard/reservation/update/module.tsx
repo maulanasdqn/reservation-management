@@ -7,24 +7,25 @@ import {
   ControlledFieldTextArea,
   FormTemplate,
 } from "@/components";
-import { GUEST_STATUS, STATUS } from "@/constants/status";
+import { GUEST_STATUS } from "@/constants/status";
 import { TVSGuest, VSGuest } from "@/entities";
 import { TVSReservation, VSReservation } from "@/entities/dashboard/reservation";
 import { clientTrpc } from "@/libs/trpc/client";
-import { generateAlphanumericCode, notifyMessage } from "@/utils";
+import { notifyMessage } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FC, ReactElement, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 export const DashboardReservationUpdateModule: FC = (): ReactElement => {
+  const { id } = useParams();
   const {
     reset,
     control,
     handleSubmit,
     setValue,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isDirty },
   } = useForm<Omit<TVSReservation, "id"> & Omit<TVSGuest, "id">>({
     mode: "all",
     resolver: zodResolver(
@@ -36,10 +37,25 @@ export const DashboardReservationUpdateModule: FC = (): ReactElement => {
 
   const { data: workUnits } = clientTrpc.getAllWorkUnit.useQuery();
   const { data: session } = useSession();
-  const { mutate: createReservation } = clientTrpc.createReservation.useMutation();
-  const { mutate: createGuest } = clientTrpc.createGuest.useMutation();
+  const { data: detailReservation } = clientTrpc.getDetailReservation.useQuery({
+    id: id as string,
+  });
+  const { data: detailGuest } = clientTrpc.getDetailGuest.useQuery({
+    id: detailReservation?.guestId as string,
+  });
+  const { mutate: updateReservation } = clientTrpc.updateReservation.useMutation();
+  const { mutate: updateGuest } = clientTrpc.updateGuest.useMutation();
 
   const { push } = useRouter();
+
+  useEffect(() => {
+    reset({
+      //@ts-ignore
+      date: new Date((detailReservation?.date as string) || new Date()) as Date,
+      ...detailReservation,
+      ...detailGuest,
+    });
+  }, [detailGuest, detailReservation, reset]);
 
   const workUnitOptions = useMemo(() => {
     if (!workUnits) return [];
@@ -66,23 +82,27 @@ export const DashboardReservationUpdateModule: FC = (): ReactElement => {
 
   const onSubmit = handleSubmit((data) => {
     console.log("Data Dari Form", data);
-    createGuest(
+    updateGuest(
       {
+        id: detailReservation?.guestId as string,
         ...data,
       },
       {
-        onSuccess: (success) => {
-          createReservation(
+        onSuccess: () => {
+          updateReservation(
             {
               ...data,
-              code: generateAlphanumericCode(),
-              status: STATUS.WAITING,
-              guestId: success.id,
+              id: id as string,
+              guestId: detailGuest?.id as string,
             },
             {
               onSuccess: () => {
                 push("/dashboard/guest?title=Data Tamu");
-                notifyMessage({ type: "success", message: "Tamu Berhasi Dibuat" });
+                notifyMessage({ type: "success", message: "Tamu Berhasi Diperbarui" });
+              },
+
+              onError: () => {
+                notifyMessage({ type: "error", message: "Tamu Gagal Diperbarui" });
               },
             },
           );
@@ -213,7 +233,7 @@ export const DashboardReservationUpdateModule: FC = (): ReactElement => {
       </div>
 
       <div className="flex gap-x-4">
-        <Button type="submit" size="sm" disabled={!isValid}>
+        <Button type="submit" size="sm" disabled={!isValid && !isDirty}>
           Simpan
         </Button>
         <Button

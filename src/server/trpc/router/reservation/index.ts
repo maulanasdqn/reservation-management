@@ -30,12 +30,15 @@ export const createReservation = publicProcedure
   });
 
 export const updateReservation = publicProcedure
-  .input(VSReservation.pick({ id: true }))
+  .input(VSReservation)
   .mutation(async ({ input }) => {
     try {
       await db
         .update(reservations)
-        .set(input)
+        .set({
+          ...input,
+          isApproved: Boolean(input.isApproved),
+        })
         .where(eq(reservations.id, input?.id as string))
         .returning();
       return {

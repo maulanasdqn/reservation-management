@@ -56,6 +56,11 @@ export const DashboardReservationModule: FC = (): ReactElement => {
               <AiFillEdit
                 className="cursor-pointer bg-green-400 text-white p-1 w-fit h-fit rounded-lg"
                 size={20}
+                onClick={() =>
+                  router.push(
+                    `/dashboard/guest/update/${row.original.id}?title=Perbarui Data Reservasi Tamu`,
+                  )
+                }
               />
               <AiFillEye
                 className="cursor-pointer bg-gray-400 text-white p-1 w-fit h-fit rounded-lg"
