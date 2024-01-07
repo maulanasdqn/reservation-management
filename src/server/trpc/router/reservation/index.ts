@@ -29,6 +29,20 @@ export const createReservation = publicProcedure
     }
   });
 
+export const onScanReservation = publicProcedure
+  .input(z.object({ code: z.string() }))
+  .mutation(async ({ input }) => {
+    try {
+      await db
+        .update(reservations)
+        .set({ status: STATUS.CHECKED_IN, isApproved: true })
+        .where(eq(reservations.code, input.code));
+    } catch (err) {
+      const error = err as TRPCError;
+      throw new Error(error?.message);
+    }
+  });
+
 export const updateReservation = publicProcedure
   .input(VSReservation)
   .mutation(async ({ input }) => {
@@ -136,7 +150,11 @@ export const getAllApprovedReservation = publicProcedure
         .leftJoin(users, eq(users.id, reservations.userId))
         .where(
           and(
-            eq(reservations.status, STATUS.APPROVED),
+            or(
+              eq(reservations.status, STATUS.APPROVED),
+              eq(reservations.status, STATUS.CHECKED_IN),
+              eq(reservations.status, STATUS.CHECKED_OUT),
+            ),
             eq(
               users.id,
               ctx.session?.user?.role?.name === ROLES.ADMIN
@@ -151,8 +169,7 @@ export const getAllApprovedReservation = publicProcedure
           ),
         )
         .limit(perPage)
-        .offset(input?.search ? 0 : offset)
-        .orderBy(reservations.createdAt, asc(reservations.createdAt));
+        .offset(input?.search ? 0 : offset);
 
       const count = await db
         .select({ isApproved: reservations.isApproved })
