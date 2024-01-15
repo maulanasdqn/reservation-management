@@ -64,18 +64,40 @@ export const DashboardReservationCompleteModule: FC = (): ReactElement => {
         header: "Nama Perusahaan / Instansi",
       },
       {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "date",
+        header: "Tanggal",
         accessorFn: (row) => {
-          return match(row.status)
-            .with(STATUS.WAITING, () => "Menunggu")
-            .with(STATUS.CHECKED_IN, () => "Check In")
-            .with(STATUS.CHECKED_OUT, () => "Check Out")
-            .with(STATUS.CENCELLED, () => "Dibatalkan")
-            .with(STATUS.APPROVED, () => "Disetujui")
-            .otherwise(() => "Tidak Terdefinisi");
+          return row.date ? format(new Date(row.date), "dd MMM yyyy") : "";
         },
       },
+      {
+        accessorKey: "hour",
+        header: "Jam",
+      },
+      {
+        accessorKey: "objective",
+        header: "Tujuan",
+      },
+      {
+        accessorKey: "workUnit.name",
+        header: "Unit Kerja",
+      },
+      {
+        accessorKey: "purpose",
+        header: "Keperluan",
+      },
+      {
+        accessorKey: "createdAt",
+        header: "Tanggal Dibuat",
+        accessorFn: (row) => {
+          return row.createdAt ? format(new Date(row.createdAt), "dd MMM yyyy") : "";
+        },
+      },
+      {
+        accessorKey: "user.fullname",
+        header: "User",
+      },
+
       {
         accessorKey: "guestStatus",
         header: "Kategori Tamu",
@@ -87,26 +109,7 @@ export const DashboardReservationCompleteModule: FC = (): ReactElement => {
             .otherwise(() => "Tidak terdefinisi");
         },
       },
-      {
-        accessorKey: "createdAt",
-        header: "Tanggal Dibuat",
-        accessorFn: (row) => {
-          return row.createdAt ? format(new Date(row.createdAt), "dd MMM yyyy") : "";
-        },
-      },
 
-      {
-        accessorKey: "objective",
-        header: "Tujuan",
-      },
-      {
-        accessorKey: "user.fullname",
-        header: "User",
-      },
-      {
-        accessorKey: "workUnit.name",
-        header: "Unit Kerja",
-      },
       {
         accessorKey: "guest.name",
         header: "Tamu",
@@ -119,19 +122,17 @@ export const DashboardReservationCompleteModule: FC = (): ReactElement => {
         },
       },
       {
-        accessorKey: "purpose",
-        header: "Keperluan",
-      },
-      {
-        accessorKey: "date",
-        header: "Tanggal",
+        accessorKey: "status",
+        header: "Status",
         accessorFn: (row) => {
-          return row.date ? format(new Date(row.date), "dd MMM yyyy") : "";
+          return match(row.status)
+            .with(STATUS.WAITING, () => "Menunggu")
+            .with(STATUS.CHECKED_IN, () => "Check In")
+            .with(STATUS.CHECKED_OUT, () => "Check Out")
+            .with(STATUS.CENCELLED, () => "Dibatalkan")
+            .with(STATUS.APPROVED, () => "Disetujui")
+            .otherwise(() => "Tidak Terdefinisi");
         },
-      },
-      {
-        accessorKey: "hour",
-        header: "Jam",
       },
     ];
   }, [router]);
