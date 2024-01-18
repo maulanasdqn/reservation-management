@@ -46,21 +46,21 @@ export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
   const sidebarData = [
     {
       name: "Tamu",
-      icon: <FaUserEdit className={iconClassName} />,
+      icon: <FaUserEdit className={iconClassName("/dashboard/guest")} />,
       path: "guest",
       permissions: [PERMISSIONS.GUEST_READ],
       children: [
         {
           name: "Data Tamu",
-          icon: <FaUserClock className={iconClassName} />,
+          icon: <FaUserClock className={iconClassName("/dashboard/guest")} />,
           path: "/dashboard/guest",
           url: `/dashboard/guest?title=Data Tamu&isSidebarOpen=${isSidebarOpen}`,
           permissions: [PERMISSIONS.GUEST_READ],
         },
         {
           name: "Data Tamu Selesai",
-          icon: <FaUserCheck className={iconClassName} />,
-          path: "/dashboard/order",
+          icon: <FaUserCheck className={iconClassName("/dashboard/order")} />,
+          path: "/dashboard/guest/complete",
           url: `/dashboard/guest/complete?title=Data Tamu Selesai&isSidebarOpen=${isSidebarOpen}`,
           permissions: [PERMISSIONS.GUEST_READ],
         },
@@ -69,13 +69,13 @@ export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
 
     {
       name: "Pengguna",
-      icon: <FaUsersCog className={iconClassName} />,
+      icon: <FaUsersCog className={iconClassName("/dashboard/user")} />,
       path: "role",
       permissions: [PERMISSIONS.USER_READ],
       children: [
         {
           name: "Pengguna",
-          icon: <PiUsersThreeFill className={iconClassName} />,
+          icon: <PiUsersThreeFill className={iconClassName("/dashboard/user")} />,
           path: "/dashboard/user",
           url: `/dashboard/user?title=Data Pengguna&isSidebarOpen=${isSidebarOpen}`,
           permissions: [PERMISSIONS.USER_READ],
@@ -105,7 +105,7 @@ export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
                 href={`/dashboard?title=Dashboard&isSidebarOpen=${isSidebarOpen}`}
                 className={selectedMenu("/dashboard")}
               >
-                <IoMdDesktop className={iconClassName} />
+                <IoMdDesktop className={iconClassName("/dashboard")} />
                 <span className="ms-3">Dashboard</span>
               </Link>
             </li>
@@ -158,14 +158,14 @@ export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
                 href={`/dashboard/setting?title=Pengaturan&isSidebarOpen=${isSidebarOpen}&menu=account`}
                 className={selectedMenu("/dashboard/setting")}
               >
-                <IoMdSettings className={iconClassName} />
+                <IoMdSettings className={iconClassName("/dashboard/setting")} />
                 <span className="ms-3">Pengaturan</span>
               </Link>
             </li>
           )}
           <li className="block md:hidden">
             <span onClick={() => setIsSidebarOpen("close")} className={selectedMenu("")}>
-              <IoMdLogOut className={iconClassName} />
+              <IoMdLogOut className={iconClassName("")} />
               <span className="ms-3">Tutup Sidebar</span>
             </span>
           </li>
