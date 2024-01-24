@@ -12,6 +12,7 @@ import { TUser } from "@/entities/user";
 import { PERMISSIONS } from "@/server/database/schema";
 import { hasCommonElements } from "@/utils";
 import { FaUsersCog, FaUserEdit } from "react-icons/fa";
+import Image from "next/image";
 
 export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
   const [isSidebarOpen, setIsSidebarOpen] = useQueryState("isSidebarOpen");
@@ -88,7 +89,8 @@ export const Sidebar: FC<{ user: TUser }> = ({ user }): ReactElement => {
     <aside id="default-sidebar" className={sidebarClassName} aria-label="Sidebar">
       <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800 shadow-md">
         <div className="flex flex-col gap-y-4 mb-4">
-          <div className="flex gap-x-3 items-center">
+          <div className="flex gap-x-2 items-center">
+            <Image src={"/logo.png"} alt="Logo" width={60} height={60} />
             <span className="text-gray-200 font-bold  w-full block text-2xl">Reservation</span>
           </div>
           <Link href={"/dashboard/setting?menu=account"}>
