@@ -65,7 +65,7 @@ export const DashboardReservationCompleteModule: FC = (): ReactElement => {
       },
       {
         accessorKey: "date",
-        header: "Tanggal",
+        header: "Tanggal Kunjungan",
         accessorFn: (row) => {
           return row.date ? format(new Date(row.date), "dd MMM yyyy") : "";
         },
